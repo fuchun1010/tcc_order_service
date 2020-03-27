@@ -1,0 +1,16 @@
+server:
+  port: 10998
+  servlet:
+    context-path: /order_service
+
+account_service:
+  reserve:
+    url: http://localhost:10999/account_service/v1/preSubMoney
+  commit:
+    url: http://localhost:10999/account_service/v1/confirmMoney
+  rollback:
+    url: http://localhost:10999/account_service/v1/rollBackSubMoney
+
+transaction_cordinator:
+  server:
+    url: http://localhost:11000/coordinator_service/v1/commit
