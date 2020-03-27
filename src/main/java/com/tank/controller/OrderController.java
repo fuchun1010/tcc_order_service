@@ -1,7 +1,10 @@
 package com.tank.controller;
 
 import com.tank.common.ApiResult;
+import com.tank.protocol.CoordinatorReq;
 import com.tank.protocol.PreSubMoneyReq;
+import com.tank.protocol.RollbackAccountReq;
+import com.tank.protocol.SubAccountReq;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseEntity;
@@ -19,23 +22,33 @@ public class OrderController {
     ApiResult<String> apiResult = new ApiResult<>();
     //TODO send reserve operation to account_service
 
-    /**
-     * {
-     *   "app": "order_service",
-     *   "xid": "s0001",
-     *   "money": 100,
-     *   "accountId": 1
-     * }
-     */
     String accountReserveUrl = this.environment.getProperty("account_service.reserve.url");
     String accountCommitUrl = this.environment.getProperty("account_service.reserve.commit");
     String accountRollbackUrl = this.environment.getProperty("account_service.reserve.rollback");
+
+    String coordinatorUrl = this.environment.getProperty("transaction_coordinator.server.url");
+
     PreSubMoneyReq preSubMoneyReq = new PreSubMoneyReq();
     preSubMoneyReq.setAccountId(1).setApp("order_service").setMoney(100).setXid("s0001");
 
     ResponseEntity<ApiResult> result = this.restTemplate.postForEntity(accountReserveUrl, preSubMoneyReq, ApiResult.class);
     String error = result.getBody().getError();
-    String preStatus = error == null ? "failure" : "success";
+    String preStatus = error == null ? "preFailure" : "success";
+
+    CoordinatorReq coordinatorReq = new CoordinatorReq();
+    coordinatorReq.setStatus(preStatus);
+
+    SubAccountReq subAccountReq = new SubAccountReq();
+    subAccountReq.setXid(preSubMoneyReq.getXid());
+    coordinatorReq.addCommit(accountCommitUrl, subAccountReq);
+
+    RollbackAccountReq rollbackAccountReq = new RollbackAccountReq();
+    rollbackAccountReq.setXid(preSubMoneyReq.getXid());
+    coordinatorReq.addRollBack(accountRollbackUrl, rollbackAccountReq);
+
+    //提交到到事务协调器
+    this.restTemplate.postForEntity(coordinatorUrl, coordinatorReq, ApiResult.class);
+
 
     return ResponseEntity.ok(apiResult);
   }

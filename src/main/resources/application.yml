@@ -11,6 +11,6 @@ account_service:
   rollback:
     url: http://localhost:10999/account_service/v1/rollBackSubMoney
 
-transaction_cordinator:
+transaction_coordinator:
   server:
-    url: http://localhost:11000/coordinator_service/v1/commit
+    url: http://localhost:11000/coordinator_service/v1/coordinate
