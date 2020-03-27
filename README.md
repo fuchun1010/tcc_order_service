@@ -8,7 +8,7 @@ create table if not exists tab_account(
 );
 
 create table if not  exists tab_account_tmp(
-   id   int primary key,
+   id   int primary key auto_increment,
    xid  varchar(20) not null,
    app  varchar(20) not null,
    tmpMoney int default 0 not null,
