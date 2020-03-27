@@ -14,3 +14,13 @@ account_service:
 transaction_coordinator:
   server:
     url: http://localhost:11000/coordinator_service/v1/coordinate
+
+logging:
+  level:
+    org:
+      springframework:
+        web:
+          servlet:
+            mvc:
+              method:
+                annotation: TRACE
