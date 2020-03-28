@@ -43,15 +43,18 @@ public class CoordinatorReq {
     return routerBean;
   }
 
+
+  private int DEFAULT_CAPACITY = 1 << 7;
+
   @Getter
   @Setter
   private String status;
   @Getter
-  private List<RouterBean> commits = Lists.newArrayListWithCapacity(1 << 7);
+  private List<RouterBean> commits = Lists.newArrayListWithCapacity(DEFAULT_CAPACITY);
   @Getter
-  private List<RouterBean> rollbacks = Lists.newArrayListWithCapacity(1 << 7);
+  private List<RouterBean> rollbacks = Lists.newArrayListWithCapacity(DEFAULT_CAPACITY);
   @Getter
-  private List<RouterBean> advice = Lists.newArrayListWithCapacity(1 << 7);
+  private List<RouterBean> advice = Lists.newArrayListWithCapacity(DEFAULT_CAPACITY);
 
 
 }

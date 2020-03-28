@@ -45,5 +45,5 @@ create table if not  exists tab_score_tmp(
 
 
 ```shell script
-
+curl -XGET "http://localhost:10998/order_service/v1/preSub"
 ```

@@ -33,10 +33,10 @@ public class OrderController {
 //    ResponseEntity<ApiResult> result = this.restTemplate.postForEntity(accountReserveUrl, preSubMoneyReq, ApiResult.class);
 //    String error = result.getBody().getError();
 //    String preStatus = error == null ? "preFailure" : "success";
-    String preStatus = "preFailure";
+    String status = "preFailure";
 
     CoordinatorReq coordinatorReq = new CoordinatorReq();
-    coordinatorReq.setStatus(preStatus);
+    coordinatorReq.setStatus(status);
 
 //    SubAccountReq subAccountReq = new SubAccountReq();
 //    subAccountReq.setXid(preSubMoneyReq.getXid());
